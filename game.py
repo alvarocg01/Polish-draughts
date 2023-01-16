@@ -21,7 +21,7 @@ class Game:
     def pick_pawn(self, row, col):
         if (0 <= row <= self.n) and (0 <= col <= self.n):
             if self.board.get_color(row, col) == -1:
-                print("no pawn in there")
+                print("No pawn in there")
                 return False
             elif self.board.get_color(row, col) != self.turn:
                 print("Not your pawn")
@@ -60,7 +60,8 @@ class Game:
                 print("Which pawn you want to move?")
                 row1 = int(input("Enter row")) - 1
                 col1 = ord(input("Enter column")[0]) - 97
-
+                if self.board.possibles_moves(self.turn, row1, col1) == False:
+                    print("You cannot move this pawn")
                 if self.pick_pawn(row1, col1):
                     aux = False
 

@@ -79,3 +79,50 @@ class Board:
         else:
             print("move is wrong")
             return False
+
+    def possibles_moves(self, color, row, col):
+
+        p_izq = -1
+        p_der = -1
+
+        # we checked their moves depends on its color
+
+        if color == True:
+            if col == 0: 
+                p_der = self.pawns[row + 1][col + 1]
+                if(p_der.get_color() == color):
+                    return False
+                else: return True
+            elif col == self.n - 1:
+                p_izq = self.pawns[row + 1][col - 1]
+                if(p_izq.get_color() == color):
+                    return False
+                else: return True
+            else:
+                p_izq = self.pawns[row + 1][col - 1]
+                p_der = self.pawns[row + 1][col + 1]
+                if (color == p_der.get_color() and color == p_izq.get_color()):
+                    return False
+                else: return True
+
+        if color == False:
+            if col == 0: 
+                p_der = self.pawns[row - 1][col + 1]
+                if(p_der.get_color() == color):
+                    return False
+                else: return True
+            elif col == self.n - 1:
+                p_izq = self.pawns[row - 1][col - 1]
+                if(p_izq.get_color() == color):
+                    return False
+                else: return True
+            else:
+                p_izq = self.pawns[row - 1][col - 1]
+                p_der = self.pawns[row - 1][col + 1]
+                if (color == p_der.get_color() and color == p_izq.get_color()):
+                    return False
+                else: return True
+        
+        
+        
+
