@@ -23,23 +23,16 @@ class Board:
     def pawn_init(self):
 
         rows, cols = self.n, self.n
-        color = True
 
-        for i in range(0, int((cols - 1) / 2) * 2 + 2, 2):
-            p = pawn.Pawn(0, i, color)
-            self.pawns[0][i] = p
-        for i in range(1, int(cols / 2) * 2, 2):
-            p = pawn.Pawn(1, i, color)
-            self.pawns[1][i] = p
-
-        color = False
-
-        for i in range(tools.odd_even2(rows), int(cols / 2) * 2, 2):
-            p = pawn.Pawn(rows - 2, i, color)
-            self.pawns[rows - 2][i] = p
-        for i in range(tools.odd_even1(rows), int((cols - 1) / 2) * 2 + 2, 2):
-            p = pawn.Pawn(rows - 1, i, color)
-            self.pawns[rows - 1][i] = p
+        for i in range(0, rows, 1):
+            for j in range(tools.is_even(i), int(cols), 2):
+                if(i <= 3):
+                    p = pawn.Pawn(i, j, True)
+                    self.pawns[i][j] = p
+                elif(i >= (rows - 4)):
+                    p = pawn.Pawn(i, j, False)
+                    self.pawns[i][j] = p
+                
 
     def print_board(self):
         board_str = ""
@@ -54,8 +47,8 @@ class Board:
                 else:
                     color = "----"
 
-                # s = "(" + str(i + 1) + ", " + chr(j + 97) + ", " + color + ")\t\t"
-                s = "(" + str(i) + ", " + str(j) + ", " + color + ")\t\t"
+                s = "(" + str(i + 1) + ", " + chr(j + 97) + ", " + color + ")\t\t"
+                # s = "(" + str(i) + ", " + str(j) + ", " + color + ")\t\t"
 
                 board_str += s
 

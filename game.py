@@ -58,16 +58,16 @@ class Game:
 
             while aux:
                 print("Which pawn you want to move?")
-                row1 = int(input("Enter row"))
-                col1 = int(input("Enter column"))
+                row1 = int(input("Enter row")) - 1
+                col1 = ord(input("Enter column")[0]) - 97
 
                 if self.pick_pawn(row1, col1):
                     aux = False
 
             while aux1:
                 print("Where you want to move?")
-                row2 = int(input("Enter row"))
-                col2 = int(input("Enter column"))
+                row2 = int(input("Enter row")) - 1
+                col2 = ord(input("Enter column")[0]) - 97
 
                 if self.move_pawn(row1, col1, row2, col2):
                     aux1 = False
