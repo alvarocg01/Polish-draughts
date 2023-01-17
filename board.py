@@ -80,6 +80,36 @@ class Board:
             print("move is wrong")
             return False
 
+    def can_eat(self, row, col):
+        p = self.pawns[row][col]
+        row_up = row + 1
+        row_down = row - 1
+        col_izq = col - 1
+        col_der = col + 1
+
+        # caso arriba izquierda, compruebo primero si no se sale de los límites en diagonal tanto a la diagonal de la ficha que me quiero comer
+        # como la casilla donde me quiero mover despues de comer
+        if (0 <= row_up <= self.n) and (0 <= col_izq <= self.n) and (0 <= row_up + 1 <= self.n) and (0 <= col_izq - 1 <= self.n):
+            p_izq = self.pawns[row_up][col_izq]
+            if(p_izq != 0): #si en la casilla diagonal hay una ficha
+                p_izq2 = self.pawns[row_up + 1][col_izq - 1]
+                if(p.get_color() != p_izq.get_color()) and (p_izq2 == 0): #compruebo que sea de distinto color y que despues hay hueco para moverme
+                    self.remove_pawn(row_up, col_izq) #elimino la ficha comida
+                    self.move_pawn(row, col, row_up, col_izq) 
+                    self.move_pawn(row_up, col_izq, row_up + 1, col_izq - 1) #muevo la ficha en dos llamadas ya que solo puedo avanzar de 1 en 1
+                    return True
+        #repito el proceso con la derecha
+        elif(0 <= row_up <= self.n) and (0 <= col_der <= self.n) and (0 <= row_up + 1 <= self.n) and (0 <= col_der + 1 <= self.n):
+            p_der = self.pawns[row_up][col_der]
+            if(p_der != 0):
+                p_der2 = self.pawns[row_up + 1][col_der + 1]
+                if(p.get_color() != p_der.get_color()) and (p_der2 == 0): 
+                    self.remove_pawn(row_up, col_der)
+                    self.move_pawn(row, col, row_up, col_der) 
+                    self.move_pawn(row_up, col_der, row_up + 1, col_der + 1) 
+                    return True
+        else: return False
+
     def possibles_moves(self, color, row, col):
 
         p_izq = -1

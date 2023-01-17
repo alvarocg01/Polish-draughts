@@ -10,9 +10,9 @@ class Game:
         self.turn = True  # True is White and False is Black
 
     def start(self):
-        self.white = input("Who is playing white?")
-        self.black = input("Who is playing black?")
-        self.n = int(input("Which is the board's size?"))
+        self.white = input("Who is playing white?\n")
+        self.black = input("Who is playing black?\n")
+        self.n = int(input("Which is the board's size?\n"))
         self.board = board.Board(self.n)
 
     def try_to_make_move(self, row1, col1, row2, col2):
@@ -29,7 +29,7 @@ class Game:
             else:
                 return True
         else:
-            print("no pawn in there")
+            print("No pawn in there")
             return False
 
     def move_pawn(self, row1, col1, row2, col2):
@@ -39,7 +39,7 @@ class Game:
             else:
                 return False
         else:
-            print("move out of border")
+            print("Move out of border")
             return False
 
     def play_game(self):
@@ -52,24 +52,30 @@ class Game:
             self.board.print_board()
 
             if self.turn:
-                print(self.white, "turn")
+                print(self.white, "TURN\n")
             else:
-                print(self.black, "turn")
+                print(self.black, "TURN\n")
 
             while aux:
-                print("Which pawn you want to move?")
-                row1 = int(input("Enter row")) - 1
-                col1 = ord(input("Enter column")[0]) - 97
-                if self.board.possibles_moves(self.turn, row1, col1) == False:
-                    print("You cannot move this pawn")
-                if self.pick_pawn(row1, col1):
+                print("Which pawn you want to move? \n")
+                row1 = int(input("Enter row: ")) - 1
+                col1 = ord(input("Enter column: ")[0]) - 97
+                if self.board.can_eat(row1, col1):
+                    if(self.turn == True):
+                        print("Pawn black has been eaten!\n")
+                    else:
+                        print("Pawn white has been eaten!\n")
+                    aux = False
+                    aux1 = False
+                #if self.board.possibles_moves(self.turn, row1, col1) == False:
+                    #print("You cannot move this pawn")
+                elif self.pick_pawn(row1, col1):
                     aux = False
 
             while aux1:
-                print("Where you want to move?")
-                row2 = int(input("Enter row")) - 1
-                col2 = ord(input("Enter column")[0]) - 97
-
+                print("Where you want to move? \n")
+                row2 = int(input("Enter row: ")) - 1
+                col2 = ord(input("Enter column: ")[0]) - 97
                 if self.move_pawn(row1, col1, row2, col2):
                     aux1 = False
 
