@@ -8,12 +8,16 @@ class Game:
         self.n = None
         self.board = None
         self.turn = True  # True is White and False is Black
+        self.n_white = None
+        self.n_black = None
 
     def start(self):
         self.white = input("Who is playing white?\n")
         self.black = input("Who is playing black?\n")
         self.n = int(input("Which is the board's size?\n"))
         self.board = board.Board(self.n)
+        self.n_white = 2 * self.n
+        self.n_black = 2 * self.n
 
     def try_to_make_move(self, row1, col1, row2, col2):
         pass
@@ -35,33 +39,63 @@ class Game:
     def move_pawn(self, row1, col1):
         aux = True
         while aux:
-            print("Where you want to move? \n")
-            row2 = int(input("Enter row: ")) - 1
-            col2 = ord(input("Enter column: ")[0]) - 97
+            while True:
+                    print("Where do you want to move? \n")
+                    try:
+                        row2 = int(input("Enter row: ")) - 1
+                    except ValueError:
+                        print("You must enter a valid row")
+                        continue
+                    try:
+                        col2 = ord(input("Enter column: ")[0]) - 97
+                    except IndexError:
+                        print("You must enter a valid column")
+                        continue
+                    else:
+                        break
 
             if (0 <= row2 <= self.n) and (0 <= col2 <= self.n):
                 if self.board.move_pawn(row1, col1, row2, col2):
                     aux = False
                 else:
-                    print("move is wrong")
+                    print("Move is wrong")
             else:
                 print("Move out of border")
 
     def eat_pawn(self, row, col):
         aux = True
         while aux:
-            print("Which pawn you want to eat? \n")
-            row1 = int(input("Enter row: ")) - 1
-            col1 = ord(input("Enter column: ")[0]) - 97
+            while True:
+                    print("Which pawn do you want to eat? \n")
+                    try:
+                        row1 = int(input("Enter row: ")) - 1
+                    except ValueError:
+                        print("You must enter a valid row")
+                        continue
+                    try:
+                        col1 = ord(input("Enter column: ")[0]) - 97
+                    except IndexError:
+                        print("You must enter a valid column")
+                        continue
+                    else:
+                        break
 
             row2 = row1 + (row1 - row)
             col2 = col1 + (col1 - col)
 
             if self.board.eats(row1, col1, row2, col2, self.turn):
                 self.board.eat_pawn(row, row1, row2, col, col1, col2)
+                if self.turn == True:
+                    self.n_white -= 1
+                    if self.n_white == 0:
+                        print("GAME OVER: WHITE PAWNS WIN")
+                elif self.turn == False:
+                    self.n_black -= 1
+                    if self.n_black == 0:
+                        print("GAME OVER: BLACK PAWNS WIN")
                 aux = False
             else:
-                print("you can't eat that pawn")
+                print("You can't eat that pawn")
 
     def play_game(self):
         self.start()
@@ -77,9 +111,20 @@ class Game:
                 print(self.black, "TURN\n")
 
             while aux:
-                print("Which pawn you want to move? \n")
-                row = int(input("Enter row: ")) - 1
-                col = ord(input("Enter column: ")[0]) - 97
+                while True:
+                    print("Which pawn do you want to move? \n")
+                    try:
+                        row = int(input("Enter row: ")) - 1
+                    except ValueError:
+                        print("You must enter a valid row")
+                        continue
+                    try:
+                        col = ord(input("Enter column: ")[0]) - 97
+                    except IndexError:
+                        print("You must enter a valid col")
+                        continue
+                    else:
+                        break
 
                 if self.pick_pawn(row, col):
                     if self.board.can_eat(self.turn, row, col):
@@ -90,5 +135,6 @@ class Game:
                         aux = False
                     else:
                         print("You can't move this pawn")
-
+            if self.n_black == 0 or self.n_white == 0:
+                break
             self.turn = not self.turn
